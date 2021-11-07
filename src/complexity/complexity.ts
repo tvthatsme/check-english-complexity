@@ -60,7 +60,7 @@ export function getComplexityDetails(
     Number of syllables: ${rs.syllableCount(text)}\n
     Number of words: ${rs.lexiconCount(text)}\n
     Number of sentences: ${rs.sentenceCount(text)}\n
-    Grade formula level: ${formulaLevel}\n
+    Grade formula level: ${formulaLevel} (using the ${gradeFormula} formula)\n
     Readability consensus: ${rs.textStandard(text)}
   `;
 }
