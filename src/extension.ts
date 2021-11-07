@@ -38,7 +38,10 @@ export function activate(context: vscode.ExtensionContext) {
   updateStatusBarItem();
 }
 
-function updateStatusBarItem(): void {
+/**
+ * Get text from a valid file type
+ */
+function getTextFile(): string | undefined {
   const activeTextEditor = vscode.window.activeTextEditor;
 
   if (activeTextEditor) {
@@ -47,28 +50,44 @@ function updateStatusBarItem(): void {
     );
 
     if (isValidFile) {
-      const text = activeTextEditor.document.getText();
-      complexityStatusBarItem.text = complexity.getComplexityLabel(text);
-      complexityStatusBarItem.show();
-
-      return;
+      return activeTextEditor.document.getText();
     }
   }
 
-  complexityStatusBarItem.hide();
+  return undefined;
 }
 
-function showComplexityDetails(): void {
-  const activeTextEditor = vscode.window.activeTextEditor;
+/**
+ * Update what the status bar is showing regarding text complexity
+ */
+function updateStatusBarItem(): void {
+  const text = getTextFile();
 
-  if (activeTextEditor) {
-    const text = activeTextEditor.document.getText();
+  if (text) {
+    complexityStatusBarItem.text = complexity.getComplexityLabel(text);
+    complexityStatusBarItem.show();
+  } else {
+    complexityStatusBarItem.hide();
+  }
+}
+
+/**
+ * Show information about the complexity of the user's English-language writing
+ */
+function showComplexityDetails(): void {
+  const text = getTextFile();
+
+  if (text) {
     const config = vscode.workspace.getConfiguration('checkComplexity');
     const gradeFormula: string | undefined = config.get('gradeFormula');
 
     vscode.window.showInformationMessage(
       complexity.getComplexityDetails(text, gradeFormula),
       { modal: true }
+    );
+  } else {
+    vscode.window.showErrorMessage(
+      'Check Complexity only really makes sense in plaintext or markdown files.'
     );
   }
 }
