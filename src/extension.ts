@@ -27,7 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.window.onDidChangeActiveTextEditor(updateStatusBarItem)
   );
   context.subscriptions.push(
-    vscode.window.onDidChangeTextEditorSelection(updateStatusBarItem)
+    vscode.workspace.onDidChangeTextDocument(updateStatusBarItem)
   );
 
   // update status bar item once at start
@@ -38,12 +38,20 @@ function updateStatusBarItem(): void {
   const activeTextEditor = vscode.window.activeTextEditor;
 
   if (activeTextEditor) {
-    const text = activeTextEditor.document.getText();
-    complexityStatusBarItem.text = complexity.getComplexityLabel(text);
-    complexityStatusBarItem.show();
-  } else {
-    complexityStatusBarItem.show();
+    const isValidFile = Boolean(
+      activeTextEditor.document.fileName.match(/(txt|md)/)?.length
+    );
+
+    if (isValidFile) {
+      const text = activeTextEditor.document.getText();
+      complexityStatusBarItem.text = complexity.getComplexityLabel(text);
+      complexityStatusBarItem.show();
+
+      return;
+    }
   }
+
+  complexityStatusBarItem.hide();
 }
 
 function showComplexityDetails(): void {
