@@ -1,5 +1,13 @@
 import * as rs from "text-readability";
 
+export function getNumberOfSyllables(text: string): number {
+  return rs.syllableCount(text);
+}
+
+export function getLexiconCount(text: string): number {
+  return rs.lexiconCount(text);
+}
+
 export function getNumberOfSentences(text: string): number {
   return rs.sentenceCount(text);
 }
@@ -24,4 +32,14 @@ export function getComplexityLabel(text: string): string {
   } else {
     return "Extremely difficult to read";
   }
+}
+
+export function getComplexityDetails(text: string): string {
+  return `
+    Number of syllables: ${rs.syllableCount(text)}\n
+    Number of words: ${rs.lexiconCount(text)}\n
+    Number of sentences: ${rs.sentenceCount(text)}\n
+    Grade formula level: ${rs.fleschKincaidGrade(text)}\n
+    Readability consensus: ${rs.textStandard(text)}
+  `;
 }

@@ -10,9 +10,7 @@ export function activate(context: vscode.ExtensionContext) {
 	const commandId = 'check-english-complexity.checkComplexity';
 
 	// register command to manually check the complexity of written text
-	context.subscriptions.push(vscode.commands.registerCommand(commandId, () => {
-		vscode.window.showInformationMessage(`Hello World from Check English Complexity!`, {modal: true});
-	}));
+	context.subscriptions.push(vscode.commands.registerCommand(commandId, showComplexityDetails));
 
 	// create a new status bar item that we can now manage
 	complexityStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
@@ -36,6 +34,15 @@ function updateStatusBarItem(): void {
 		complexityStatusBarItem.show();	
 	} else {
 		complexityStatusBarItem.show();
+	}
+}
+
+function showComplexityDetails(): void {
+	const activeTextEditor = vscode.window.activeTextEditor;
+
+	if (activeTextEditor) {
+		const text = activeTextEditor.document.getText();
+		vscode.window.showInformationMessage(complexity.getComplexityDetails(text), {modal: true});
 	}
 }
 
