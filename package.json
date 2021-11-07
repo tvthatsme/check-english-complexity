@@ -22,24 +22,30 @@
         "title": "Check Complexity"
       }
     ],
-		"configuration": {
-			"title": "Check Complexity",
-			"properties": {
-				"checkComplexity.gradeFormula": {
-					"type": "string",
-					"description": "Specifies what formula to use when calculating a text's grade reading level.",
-					"default": "fleschKincaidGrade",
-					"enum": ["fleschKincaidGrade", "gunningFog", "smogIndex", "colemanLiauIndex", "linsearWriteFormula"],
-					"enumDescriptions": [
-						"Use the Flesch-Kincaid Grade to evaluate the given text",
-						"Use the FOG index to evaluate the given text",
-						"Use the SMOG index to evaluate the given text",
-						"Use the Coleman-Liau Formula to evaluate the given text",
-						"Use the Linsear Write Formula to evaluate the given text"
-					]
-				}
-			}
-		}
+    "configuration": {
+      "title": "Check Complexity",
+      "properties": {
+        "checkComplexity.gradeFormula": {
+          "type": "string",
+          "description": "Specifies what formula to use when calculating a text's grade reading level.",
+          "default": "fleschKincaidGrade",
+          "enum": [
+            "fleschKincaidGrade",
+            "gunningFog",
+            "smogIndex",
+            "colemanLiauIndex",
+            "linsearWriteFormula"
+          ],
+          "enumDescriptions": [
+            "Use the Flesch-Kincaid Grade to evaluate the given text",
+            "Use the FOG index to evaluate the given text",
+            "Use the SMOG index to evaluate the given text",
+            "Use the Coleman-Liau Formula to evaluate the given text",
+            "Use the Linsear Write Formula to evaluate the given text"
+          ]
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
@@ -50,6 +56,7 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
+    "@types/debounce": "^1.2.1",
     "@types/glob": "^7.1.4",
     "@types/mocha": "^9.0.0",
     "@types/node": "14.x",
@@ -66,6 +73,7 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
+    "debounce": "^1.2.1",
     "text-readability": "^1.0.5"
   }
 }

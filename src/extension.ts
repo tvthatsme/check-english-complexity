@@ -1,10 +1,12 @@
 import * as vscode from 'vscode';
+import * as debounce from 'debounce';
 import * as complexity from './complexity/complexity';
 
 let complexityStatusBarItem: vscode.StatusBarItem;
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+// Time in ms to wait before processing changes to text
+const debounceDuration = 300;
+
 export function activate(context: vscode.ExtensionContext) {
   // register a command that is invoked when the status bar item is selected
   const commandId = 'check-english-complexity.checkComplexity';
@@ -27,7 +29,9 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.window.onDidChangeActiveTextEditor(updateStatusBarItem)
   );
   context.subscriptions.push(
-    vscode.workspace.onDidChangeTextDocument(updateStatusBarItem)
+    vscode.workspace.onDidChangeTextDocument(
+      debounce(updateStatusBarItem, debounceDuration)
+    )
   );
 
   // update status bar item once at start
