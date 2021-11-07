@@ -1,25 +1,42 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import * as complexity from "./complexity/complexity";
+
+let complexityStatusBarItem: vscode.StatusBarItem;
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-	
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "check-english-complexity" is now active!');
+	// register a command that is invoked when the status bar item is selected
+	const commandId = 'check-english-complexity.checkComplexity';
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('check-english-complexity.checkComplexity', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Check English Complexity!');
-	});
+	// register command to manually check the complexity of written text
+	context.subscriptions.push(vscode.commands.registerCommand(commandId, () => {
+		vscode.window.showInformationMessage(`Hello World from Check English Complexity!`, {modal: true});
+	}));
 
-	context.subscriptions.push(disposable);
+	// create a new status bar item that we can now manage
+	complexityStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
+	complexityStatusBarItem.command = commandId;
+	context.subscriptions.push(complexityStatusBarItem);
+
+	// register some listener that make sure the status bar is item always up-to-date
+	context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(updateStatusBarItem));
+	context.subscriptions.push(vscode.window.onDidChangeTextEditorSelection(updateStatusBarItem));
+
+	// update status bar item once at start
+	updateStatusBarItem();
+}
+
+function updateStatusBarItem(): void {
+	const activeTextEditor = vscode.window.activeTextEditor;
+
+	if (activeTextEditor) {
+		const text = activeTextEditor.document.getText();
+		complexityStatusBarItem.text = complexity.getComplexityLabel(text);
+		complexityStatusBarItem.show();	
+	} else {
+		complexityStatusBarItem.show();
+	}
 }
 
 // this method is called when your extension is deactivated
