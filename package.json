@@ -21,7 +21,25 @@
         "command": "check-english-complexity.checkComplexity",
         "title": "Check Complexity"
       }
-    ]
+    ],
+		"configuration": {
+			"title": "Check Complexity",
+			"properties": {
+				"checkComplexity.gradeFormula": {
+					"type": "string",
+					"description": "Specifies what formula to use when calculating a text's grade reading level.",
+					"default": "fleschKincaidGrade",
+					"enum": ["fleschKincaidGrade", "gunningFog", "smogIndex", "colemanLiauIndex", "linsearWriteFormula"],
+					"enumDescriptions": [
+						"Use the Flesch-Kincaid Grade to evaluate the given text",
+						"Use the FOG index to evaluate the given text",
+						"Use the SMOG index to evaluate the given text",
+						"Use the Coleman-Liau Formula to evaluate the given text",
+						"Use the Linsear Write Formula to evaluate the given text"
+					]
+				}
+			}
+		}
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

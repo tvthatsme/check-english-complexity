@@ -34,12 +34,33 @@ export function getComplexityLabel(text: string): string {
   }
 }
 
-export function getComplexityDetails(text: string): string {
+export function getComplexityDetails(
+  text: string,
+  gradeFormula = 'fleschKincaidGrade'
+): string {
+  let formulaLevel;
+  switch (gradeFormula) {
+    case 'gunningFog':
+      formulaLevel = rs.gunningFog(text);
+      break;
+    case 'smogIndex':
+      formulaLevel = rs.smogIndex(text);
+      break;
+    case 'colemanLiauIndex':
+      formulaLevel = rs.colemanLiauIndex(text);
+      break;
+    case 'linsearWriteFormula':
+      formulaLevel = rs.linsearWriteFormula(text);
+      break;
+    default:
+      formulaLevel = rs.fleschKincaidGrade(text);
+  }
+
   return `
     Number of syllables: ${rs.syllableCount(text)}\n
     Number of words: ${rs.lexiconCount(text)}\n
     Number of sentences: ${rs.sentenceCount(text)}\n
-    Grade formula level: ${rs.fleschKincaidGrade(text)}\n
+    Grade formula level: ${formulaLevel}\n
     Readability consensus: ${rs.textStandard(text)}
   `;
 }

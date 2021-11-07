@@ -51,8 +51,11 @@ function showComplexityDetails(): void {
 
   if (activeTextEditor) {
     const text = activeTextEditor.document.getText();
+    const config = vscode.workspace.getConfiguration('checkComplexity');
+    const gradeFormula: string | undefined = config.get('gradeFormula');
+
     vscode.window.showInformationMessage(
-      complexity.getComplexityDetails(text),
+      complexity.getComplexityDetails(text, gradeFormula),
       { modal: true }
     );
   }
