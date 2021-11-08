@@ -15,4 +15,4 @@ This extension contributes the following settings:
 
 ## Preview
 
-![Check the complexity of English text](https://raw.githubusercontent.com/tvthatsme/check-english-complexity/preview.gif)
+![Check the complexity of English text](https://github.com/tvthatsme/check-english-complexity/blob/main/preview.gif)
